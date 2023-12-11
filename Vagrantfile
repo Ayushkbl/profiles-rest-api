@@ -17,7 +17,12 @@ Vagrant.configure("2") do |config|
  
   config.ssh.insert_key = false
 
+  config.vm.synced_folder ".", "/vagrant"
   config.vm.network "forwarded_port", guest: 8000, host: 8000
+
+  if Vagrant.has_plugin?("vagrant-vbguest")
+    config.vbguest.auto_update = false
+  end
 
   config.vm.provision "shell", inline: <<-SHELL
     systemctl disable apt-daily.service
